@@ -1,0 +1,20 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f3f5;
+}
+
+main {
+  flex: 1;
+  padding: 0 8px;
+}
+
+@media only screen and (min-width: 768px) {
+  .app {
+    margin: 8px 8px 0 8px;
+  }
+  main {
+    padding: 0;
+  }
+}

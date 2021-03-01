@@ -1,0 +1,10 @@
+header {
+  background-color: #070708;
+  padding: 8px;
+}
+header img {
+  max-height: 40px;
+}
+
+@media screen and (mix-width: 768px) {
+}
