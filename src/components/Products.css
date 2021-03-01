@@ -1,0 +1,50 @@
+.Products {
+  margin: 10px;
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.card_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-width: 230px;
+  max-width: 230px;
+  height: 310px;
+  margin-right: 5px;
+  text-align: center;
+  color: #070708;
+  background-color: #ebebeb;
+  padding: 5px;
+}
+.Products:last-child {
+  margin: 5px 0;
+}
+.card_wrapper img {
+  max-width: 230px;
+  max-height: 150px;
+  min-height: 150px;
+  object-fit: scale-down;
+  mix-blend-mode: multiply;
+}
+.card_title {
+  font-size: 1.2rem;
+  max-height: 50px;
+  overflow: hidden;
+}
+.card_details {
+  position: absolute;
+  bottom: 8px;
+}
+
+@media only screen and (min-width: 768px) {
+  .Products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card_wrapper {
+    margin: 5px;
+  }
+}
