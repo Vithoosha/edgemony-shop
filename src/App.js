@@ -1,8 +1,16 @@
 import "./App.css";
-import { Header, Hero, Products, Modal, Footer } from "./components/Index";
-import { useState } from "react";
+import {
+  Header,
+  Hero,
+  Loader,
+  Products,
+  Modal,
+  Footer,
+} from "./components/Index";
+import { useState, useEffect } from "react";
 
 const fakeProducts = require("./mocks/data/products.json");
+const urlApi = "https://fakestoreapi.com/products";
 
 const data = {
   title: "Edgemony Shop",
@@ -18,6 +26,8 @@ const data = {
 function App() {
   const [isModal, setIsModal] = useState(false);
   const [contentModal, setContentModal] = useState(null);
+  const [products, setProducts] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   function showModal(product) {
     setContentModal(product);
@@ -29,12 +39,25 @@ function App() {
     setContentModal(null);
   }
 
+  useEffect(() => {
+    fetch(urlApi)
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <div className="App">
       <Header logo={data.logo} />
       <main>
         <Hero title={data.title} desc={data.description} cover={data.cover} />
-        <Products products={fakeProducts} showModal={showModal} />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Products products={products} showModal={showModal} />
+        )}
         <Modal isModal={isModal} product={contentModal} hideModal={hideModal} />
       </main>
       <Footer company={data.company} />
