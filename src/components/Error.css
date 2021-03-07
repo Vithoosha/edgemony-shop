@@ -1,0 +1,37 @@
+.Error {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(114, 10, 10);
+  color: #fff;
+  padding: 2px;
+  font-size: 1rem;
+  display: flex;
+  align-content: space-around;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.Error div {
+  display: flex;
+  flex-direction: column;
+  padding-left: 4px;
+}
+.Error button {
+  margin: 4px;
+}
+
+#hide {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .Error div {
+    display: flex;
+    flex-direction: row;
+    padding-left: 25px;
+  }
+}
