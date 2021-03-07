@@ -1,18 +1,16 @@
+import Card from "./Card.js";
 import "./Products.css";
 
-function Products({ products }) {
+function Products({ products, showModal }) {
   return (
     <div className="Products">
       {products.map((product) => {
         return (
-          <div className="card_wrapper" key={product.id}>
-            <img src={product.image} alt={product.title} />
-            <h2 className="card_title">{product.title}</h2>
-            <div className="card_details">
-              <p>${product.price}</p>
-              <button>View details</button>
-            </div>
-          </div>
+          <Card
+            key={product.id}
+            product={product}
+            showModal={() => showModal(product)}
+          />
         );
       })}
     </div>

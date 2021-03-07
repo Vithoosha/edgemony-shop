@@ -1,8 +1,6 @@
 import "./App.css";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Products from "./components/Products";
-import Footer from "./components/Footer";
+import { Header, Hero, Products, Modal, Footer } from "./components/Index";
+import { useState } from "react";
 
 const fakeProducts = require("./mocks/data/products.json");
 
@@ -18,12 +16,26 @@ const data = {
 };
 
 function App() {
+  const [isModal, setIsModal] = useState(false);
+  const [contentModal, setContentModal] = useState(null);
+
+  function showModal(product) {
+    setContentModal(product);
+    setIsModal(true);
+  }
+
+  function hideModal() {
+    setIsModal(false);
+    setContentModal(null);
+  }
+
   return (
     <div className="App">
       <Header logo={data.logo} />
       <main>
         <Hero title={data.title} desc={data.description} cover={data.cover} />
-        <Products products={fakeProducts} />
+        <Products products={fakeProducts} showModal={showModal} />
+        <Modal isModal={isModal} product={contentModal} hideModal={hideModal} />
       </main>
       <Footer company={data.company} />
     </div>
