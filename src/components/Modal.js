@@ -1,6 +1,9 @@
+import { useState } from "react";
 import "./Modal.css";
 
-function Modal({ isModal, product, hideModal }) {
+function Modal({ isModal, product, hideModal, addToCart }) {
+  const [disabled, setDisabled] = useState(false);
+
   return (
     <div className={`modal_wrapper ${isModal ? "show" : ""}`}>
       {product ? (
@@ -14,6 +17,15 @@ function Modal({ isModal, product, hideModal }) {
           <h2>{product.title}</h2>
           <p>{product.description}</p>
           <p>{product.price}</p>
+          <button
+            disabled={disabled}
+            onClick={() => {
+              addToCart(product);
+              setDisabled(true);
+            }}
+          >
+            Add to cart
+          </button>
         </div>
       ) : null}
     </div>
