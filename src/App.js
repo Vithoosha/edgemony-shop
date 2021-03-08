@@ -1,6 +1,7 @@
 import "./App.css";
 import {
   Header,
+  Cart,
   Hero,
   Loader,
   Products,
@@ -11,7 +12,6 @@ import {
 import { useState, useEffect } from "react";
 
 // const fakeProducts = require("./mocks/data/products.json");
-const urlApi = "https://fakestoreapi.com/products";
 
 const data = {
   title: "Edgemony Shop",
@@ -22,16 +22,30 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   // products: fakeProducts,
   company: "Edgemony S.r.l.",
+  urlApi: "https://fakestoreapi.com/products",
 };
 
 function App() {
   const [isModal, setIsModal] = useState(false);
   const [contentModal, setContentModal] = useState(null);
-  const [products, setProducts] = useState();
+
+  const [products, setProducts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [errMess, setErrMess] = useState("");
   const [retry, setRetry] = useState(false);
+
+  const [cart, setCart] = useState([]);
+  const [cartState, setCartState] = useState(false);
+
+  function addToCart(product) {
+    setCart([...cart, product]);
+    console.log(cart);
+  }
+
+  function manageCart() {
+    setCartState(!cartState);
+  }
 
   function showModal(product) {
     setContentModal(product);
@@ -44,7 +58,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(urlApi)
+    fetch(data.urlApi)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
@@ -59,7 +73,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header logo={data.logo} />
+      <Header logo={data.logo} manageCart={manageCart} cart={cart} />
+      {cartState ? <Cart cart={cart} manageCart={manageCart} /> : null}
       <main>
         <Hero title={data.title} desc={data.description} cover={data.cover} />
 
@@ -67,14 +82,23 @@ function App() {
           <Error
             text={errMess}
             retry={() => setRetry(!retry)}
-            close={() => setErrMess(undefined)}
+            close={() => setErrMess("")}
           />
         ) : isLoading ? (
           <Loader />
         ) : (
-          <Products products={products} showModal={showModal} />
+          <Products
+            products={products}
+            showModal={showModal}
+            addToCart={addToCart}
+          />
         )}
-        <Modal isModal={isModal} product={contentModal} hideModal={hideModal} />
+        <Modal
+          isModal={isModal}
+          product={contentModal}
+          hideModal={hideModal}
+          addToCart={addToCart}
+        />
       </main>
       <Footer company={data.company} />
     </div>
