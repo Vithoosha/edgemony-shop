@@ -5,17 +5,19 @@ function Header({ logo, manageCart, cart }) {
   return (
     <header>
       <img src={logo} alt="Edgemony" />
-      <button onClick={manageCart}>
-        <p className="total">
-          {Math.round((total + Number.EPSILON) * 100) / 100}€
-        </p>
-        <p>{cart.length}</p>
-        <img
-          className="cartImg"
-          src="https://i.imgur.com/h2htEiW.png"
-          alt="cart"
-        />
-      </button>
+      <div className="cart_info">
+        {!!total ? (
+          <div>
+            <span className="total">
+              {Math.round((total + Number.EPSILON) * 100) / 100}€
+            </span>
+            <span>{cart.length}</span>
+          </div>
+        ) : null}
+        <button onClick={manageCart}>
+          <i className="fas fa-shopping-cart"></i>
+        </button>
+      </div>
     </header>
   );
 }
