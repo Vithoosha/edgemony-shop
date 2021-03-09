@@ -11,8 +11,6 @@ import {
 } from "./components/Index";
 import { useState, useEffect } from "react";
 
-// const fakeProducts = require("./mocks/data/products.json");
-
 const data = {
   title: "Edgemony Shop",
   description: "A fake e-commerce with a lot of potential",
@@ -20,7 +18,6 @@ const data = {
     "https://edgemony.com/wp-content/uploads/2020/03/cropped-Logo-edgemony_TeBIANCO-04.png",
   cover:
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-  // products: fakeProducts,
   company: "Edgemony S.r.l.",
   urlApi: "https://fakestoreapi.com/products",
 };
@@ -28,57 +25,59 @@ const data = {
 function App() {
   const [isModal, setIsModal] = useState(false);
   const [contentModal, setContentModal] = useState(null);
-
-  const [products, setProducts] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [errMess, setErrMess] = useState("");
-  const [retry, setRetry] = useState(false);
-
-  const [cart, setCart] = useState([]);
-  const [cartState, setCartState] = useState(false);
-
-  function addToCart(product) {
-    setCart([...cart, product]);
-    console.log(cart);
-  }
-
-  function manageCart() {
-    setCartState(!cartState);
-  }
-
   function showModal(product) {
     setContentModal(product);
     setIsModal(true);
   }
-
   function hideModal() {
     setIsModal(false);
     setContentModal(null);
   }
 
+  const [cart, setCart] = useState([]);
+  const [cartState, setCartState] = useState(false);
+  const addToCart = (product) =>
+    setCart([
+      ...cart,
+      {
+        id: product.id,
+        image: product.image,
+        price: product.price,
+        title: product.title,
+        quantity: "1",
+      },
+    ]);
+  const manageCart = () => setCartState(!cartState);
+
+  const [products, setProducts] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errMess, setErrMess] = useState("");
+  const [retry, setRetry] = useState(false);
   useEffect(() => {
     fetch(data.urlApi)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
-        setIsLoading(false);
       })
       .catch((error) => {
-        setIsLoading(false);
         setErrMess(error.message);
-        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [retry]);
 
   return (
     <div className="App">
       <Header logo={data.logo} manageCart={manageCart} cart={cart} />
-      {cartState ? <Cart cart={cart} manageCart={manageCart} /> : null}
       <main>
         <Hero title={data.title} desc={data.description} cover={data.cover} />
 
-        {isError ? (
+        {cartState ? (
+          <Cart cart={cart} manageCart={manageCart} setCart={setCart} />
+        ) : null}
+
+        {errMess ? (
           <Error
             text={errMess}
             retry={() => setRetry(!retry)}
@@ -87,17 +86,15 @@ function App() {
         ) : isLoading ? (
           <Loader />
         ) : (
-          <Products
-            products={products}
-            showModal={showModal}
-            addToCart={addToCart}
-          />
+          <Products products={products} showModal={showModal} />
         )}
         <Modal
           isModal={isModal}
-          product={contentModal}
+          content={contentModal}
           hideModal={hideModal}
+          cart={cart}
           addToCart={addToCart}
+          setCart={setCart}
         />
       </main>
       <Footer company={data.company} />

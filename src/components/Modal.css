@@ -22,7 +22,7 @@
   opacity: 1;
 }
 .modal_body {
-  max-height: 100vh;
+  max-height: 80vh;
   position: relative;
   margin: 8px;
   padding: 8px;
@@ -32,7 +32,7 @@
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
   color: #000;
   background: #fff;
-  overflow: hidden;
+  overflow-y: scroll;
   text-align: center;
 }
 .modal_btn {
@@ -55,5 +55,9 @@
   .modal_body img {
     max-width: 520px;
     height: 200px;
+  }
+  .modal_body {
+    overflow: hidden;
+    height: fit-content;
   }
 }

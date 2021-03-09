@@ -1,7 +1,7 @@
 import Card from "./Card.js";
 import "./Products.css";
 
-function Products({ products, showModal, addToCart }) {
+function Products({ products, showModal }) {
   return (
     <div className="Products">
       {products.map((product) => {
@@ -10,7 +10,6 @@ function Products({ products, showModal, addToCart }) {
             key={product.id}
             product={product}
             showModal={() => showModal(product)}
-            addToCart={() => addToCart(product)}
           />
         );
       })}
