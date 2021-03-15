@@ -1,30 +1,26 @@
 import "./Cart.css";
 import CartProduct from "./CartProduct";
+import { formatPrice } from "../services/utils";
 
-function Cart({ cart, setCart, manageCart }) {
-  const total = cart.reduce((prev, current) => prev + current.price, 0);
-  const remove = (item) => {
-    const filtered = cart.filter((product) => product.id !== item.id);
-    setCart(filtered);
-  };
-
+function Cart({ products, totalPrice, removeFromCart, setProductQuantity }) {
   return (
-    <div className="Cart">
-      <div className="cart_header">
-        <button onClick={manageCart}>✖</button>
-        <h3>Cart</h3>
-      </div>
-      {cart ? (
-        <div className="cart_body">
-          {cart.map((item) => (
-            <CartProduct item={item} remove={remove} />
+    <>
+      {products.length > 0 ? (
+        <div className="Cart">
+          {products.map((product) => (
+            <CartProduct
+              key={product.id}
+              product={product}
+              remove={removeFromCart}
+              setQuantity={setProductQuantity}
+            />
           ))}
         </div>
       ) : null}
       <div className="cart_footer">
-        <p>Total: {Math.round((total + Number.EPSILON) * 100) / 100}</p>
+        <p>Total: {formatPrice(totalPrice)}</p>
       </div>
-    </div>
+    </>
   );
 }
 

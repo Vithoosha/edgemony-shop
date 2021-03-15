@@ -39,9 +39,7 @@ export const handlers = [
     "/products/categories/:category",
     randomError(function orderItems(req, res, ctx) {
       const { category } = req.params;
-      const filteredProducts = products.filter(
-        (p) => p.category === category
-      );
+      const filteredProducts = products.filter((p) => p.category === category);
       return res(ctx.status(200), ctx.json(filteredProducts));
     })
   ),

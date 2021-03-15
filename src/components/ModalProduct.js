@@ -1,15 +1,18 @@
-import "./Modal.css";
+import "./ModalProduct.css";
 
-function Modal({ isModal, content, hideModal, cart, addToCart, setCart }) {
-  const isAlreadyInCart = () =>
-    cart.find((product) => product.id === content.id);
-
-  const toggle = () => {
-    if (isAlreadyInCart()) {
-      const filtered = cart.filter((product) => product.id !== content.id);
-      setCart(filtered);
+function ModalProduct({
+  isModal,
+  content,
+  hideModal,
+  isInCart,
+  addToCart,
+  removeFromCart,
+}) {
+  const toggleCart = () => {
+    if (isInCart) {
+      removeFromCart(content.id);
     } else {
-      addToCart(content);
+      addToCart(content.id);
     }
   };
   return (
@@ -25,8 +28,8 @@ function Modal({ isModal, content, hideModal, cart, addToCart, setCart }) {
           <h2>{content.title}</h2>
           <p>{content.description}</p>
           <p>{content.price}</p>
-          <button onClick={toggle}>
-            {!isAlreadyInCart() ? "Add to cart" : "Remove"}
+          <button onClick={toggleCart}>
+            {!isInCart ? "Add to cart" : "Remove"}
           </button>
         </div>
       ) : null}
@@ -34,4 +37,4 @@ function Modal({ isModal, content, hideModal, cart, addToCart, setCart }) {
   );
 }
 
-export default Modal;
+export default ModalProduct;
