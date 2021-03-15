@@ -1,4 +1,4 @@
-import "./ModalProduct.css";
+import "./ProductDetail.css";
 
 function ModalProduct({
   isModal,
@@ -16,14 +16,9 @@ function ModalProduct({
     }
   };
   return (
-    <div className={`modal_wrapper ${isModal ? "show" : ""}`}>
+    <div className="ProductDetail">
       {content ? (
-        <div className="modal_body">
-          <div className="modal_btn">
-            <button className="close_btn" onClick={hideModal}>
-              ✖
-            </button>
-          </div>
+        <>
           <img src={content.image} alt={content.title} />
           <h2>{content.title}</h2>
           <p>{content.description}</p>
@@ -31,7 +26,7 @@ function ModalProduct({
           <button onClick={toggleCart}>
             {!isInCart ? "Add to cart" : "Remove"}
           </button>
-        </div>
+        </>
       ) : null}
     </div>
   );
