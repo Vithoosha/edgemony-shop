@@ -1,0 +1,59 @@
+.ModalSidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  top: 56px;
+  z-index: 99;
+  background-color: #f4f3f5;
+  width: 100vw;
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+}
+.ModalSidebar.isOpen {
+  visibility: visible;
+  opacity: 1;
+}
+.ModalSidebar button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 1.2rem;
+}
+.Sidebar_header {
+  background-color: #18181b;
+}
+.Sidebar_header button {
+  display: block;
+  float: left;
+  margin-left: 2px;
+  color: #fff;
+}
+.Sidebar_header h3 {
+  margin: 0;
+  text-align: center;
+}
+.Sidebar_body {
+  overflow-y: auto;
+  flex: 1;
+  color: #000;
+}
+.Sidebar_body.flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+@media only screen and (min-width: 768px) {
+  .ModalSidebar {
+    max-width: 300px;
+  }
+  .Sidebar_body {
+    padding-right: 0;
+  }
+}

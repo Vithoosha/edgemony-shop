@@ -1,0 +1,18 @@
+.cart_item {
+  border-bottom: 1px dashed rgba(151, 151, 151, 0.37);
+  margin-bottom: 8px;
+}
+.cart_img_title {
+  display: flex;
+  justify-content: space-between;
+}
+.cart_item button {
+  font-weight: normal;
+  font-size: 1rem;
+}
+.cart_info {
+  justify-content: space-evenly;
+}
+.cart_info button {
+  font-weight: bold;
+}

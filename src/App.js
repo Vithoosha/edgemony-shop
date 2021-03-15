@@ -6,23 +6,31 @@ import {
   Loader,
   Products,
   Error,
-  Modal,
+  ModalProduct,
   Footer,
 } from "./components/Index";
+import ModalSidebar from "./components/ModalSidebar";
+import ModalOverlay from "./components/ModalOverlay";
 import { useState, useEffect } from "react";
-
-const data = {
-  title: "Edgemony Shop",
-  description: "A fake e-commerce with a lot of potential",
-  logo:
-    "https://edgemony.com/wp-content/uploads/2020/03/cropped-Logo-edgemony_TeBIANCO-04.png",
-  cover:
-    "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-  company: "Edgemony S.r.l.",
-  urlApi: "https://fakestoreapi.com/products",
-};
+import { data } from "./services/data";
+import { fetchProducts, fetchCategories } from "./services/api";
 
 function App() {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errMess, setErrMess] = useState("");
+  const [retry, setRetry] = useState(false);
+  useEffect(() => {
+    Promise.all([fetchProducts(), fetchCategories()])
+      .then(([products, categories]) => {
+        setProducts(products);
+        setCategories(categories);
+      })
+      .catch((err) => setErrMess(err.message))
+      .finally(() => setIsLoading(false));
+  }, [retry]);
+
   const [isModal, setIsModal] = useState(false);
   const [contentModal, setContentModal] = useState(null);
   function showModal(product) {
@@ -36,47 +44,62 @@ function App() {
 
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);
-  const addToCart = (product) =>
-    setCart([
-      ...cart,
-      {
-        id: product.id,
-        image: product.image,
-        price: product.price,
-        title: product.title,
-        quantity: "1",
-      },
-    ]);
   const manageCart = () => setCartState(!cartState);
-
-  const [products, setProducts] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errMess, setErrMess] = useState("");
-  const [retry, setRetry] = useState(false);
-  useEffect(() => {
-    fetch(data.urlApi)
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-      })
-      .catch((error) => {
-        setErrMess(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [retry]);
+  const cartProducts = cart.map((cartItem) => {
+    const { price, image, title, id } = products.find(
+      (p) => p.id === cartItem.id
+    );
+    return { price, image, title, id, quantity: cartItem.quantity };
+  });
+  const cartTotal = cartProducts.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0
+  );
+  function isInCart(product) {
+    return product != null && cart.find((p) => p.id === product.id) != null;
+  }
+  function addToCart(productId) {
+    setCart([...cart, { id: productId, quantity: 1 }]);
+  }
+  function removeFromCart(productId) {
+    setCart(cart.filter((product) => product.id !== productId));
+  }
+  function setProductQuantity(productId, quantity) {
+    setCart(
+      cart.map((product) =>
+        product.id === productId ? { ...product, quantity } : product
+      )
+    );
+  }
 
   return (
     <div className="App">
-      <Header logo={data.logo} manageCart={manageCart} cart={cart} />
+      <Header
+        logo={data.logo}
+        manageCart={manageCart}
+        cartTotal={cartTotal}
+        cartSize={cart.length}
+        products={products}
+      />
       <main>
         <Hero title={data.title} desc={data.description} cover={data.cover} />
+        <ModalOverlay isOpen={cartState} isClose={manageCart}>
+          <ModalSidebar
+            isOpen={cartState}
+            isClose={manageCart}
+            title="Cart"
+            flex="flex"
+          >
+            <Cart
+              products={cartProducts}
+              totalPrice={cartTotal}
+              removeFromCart={removeFromCart}
+              setProductQuantity={setProductQuantity}
+            />
+          </ModalSidebar>
+        </ModalOverlay>
 
-        {cartState ? (
-          <Cart cart={cart} manageCart={manageCart} setCart={setCart} />
-        ) : null}
-
+        {/* { errMess ? Error : (isLoading ? Loader : Products ) } */}
         {errMess ? (
           <Error
             text={errMess}
@@ -86,15 +109,20 @@ function App() {
         ) : isLoading ? (
           <Loader />
         ) : (
-          <Products products={products} showModal={showModal} />
+          <Products
+            products={products}
+            showModal={showModal}
+            categories={categories}
+          />
         )}
-        <Modal
+
+        <ModalProduct
           isModal={isModal}
           content={contentModal}
           hideModal={hideModal}
-          cart={cart}
+          isInCart={isInCart(contentModal)}
           addToCart={addToCart}
-          setCart={setCart}
+          removeFromCart={removeFromCart}
         />
       </main>
       <Footer company={data.company} />
