@@ -6,11 +6,12 @@ import {
   Loader,
   Products,
   Error,
-  ModalProduct,
+  ProductDetail,
+  ModalSidebar,
+  ModalOverlay,
   Footer,
+  ModalCenter,
 } from "./components/Index";
-import ModalSidebar from "./components/ModalSidebar";
-import ModalOverlay from "./components/ModalOverlay";
 import { useState, useEffect } from "react";
 import { data } from "./services/data";
 import { fetchProducts, fetchCategories } from "./services/api";
@@ -116,14 +117,16 @@ function App() {
           />
         )}
 
-        <ModalProduct
-          isModal={isModal}
-          content={contentModal}
-          hideModal={hideModal}
-          isInCart={isInCart(contentModal)}
-          addToCart={addToCart}
-          removeFromCart={removeFromCart}
-        />
+        <ModalOverlay isOpen={isModal} isClose={hideModal}>
+          <ModalCenter isOpen={isModal} isClose={hideModal}>
+            <ProductDetail
+              content={contentModal}
+              isInCart={isInCart(contentModal)}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
+          </ModalCenter>
+        </ModalOverlay>
       </main>
       <Footer company={data.company} />
     </div>

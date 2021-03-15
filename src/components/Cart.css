@@ -11,7 +11,5 @@
   padding: 4px;
 }
 .Cart img {
-  width: 50px;
-  object-fit: scale-down;
   mix-blend-mode: multiply;
 }

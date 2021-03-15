@@ -49,6 +49,10 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.Sidebar_body img {
+  width: 50px;
+  object-fit: scale-down;
+}
 @media only screen and (min-width: 768px) {
   .ModalSidebar {
     max-width: 300px;

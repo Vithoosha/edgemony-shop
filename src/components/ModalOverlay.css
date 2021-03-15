@@ -1,19 +1,28 @@
 .ModalOverlay {
-  z-index: 3;
-  background-color: dimgray;
-  width: 100%;
-  height: 100%;
+  z-index: 10;
   position: fixed;
   top: 0;
   left: 0;
-  visibility: hidden;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(77, 77, 77, 0.788);
-  transition: all 0.3s linear;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
 }
 .ModalOverlay.isOpen {
-  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal_overlay {
+  background: rgba(77, 77, 77, 0.788);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s linear;
+  z-index: 3;
+}
+.ModalOverlay.isOpen .modal_overlay {
   opacity: 1;
 }
