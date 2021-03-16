@@ -1,19 +1,23 @@
 import "./Header.css";
+import { Link } from "react-router-dom";
+import { formatPrice } from "../services/utils";
 
-function Header({ logo, manageCart, cartTotal, cartSize }) {
+function Header({ logo, title, cartTotal, cartSize }) {
   return (
     <header>
-      <img src={logo} alt="Edgemony" />
+      <Link to="/">
+        <img src={logo} alt={title} />
+      </Link>
       <div className="cart_info">
         {!!cartTotal ? (
           <div>
-            <span className="total">{cartTotal}€</span>
+            <span className="total">{formatPrice(cartTotal)}</span>
             <span>{cartSize}</span>
           </div>
         ) : null}
-        <button onClick={manageCart}>
+        <Link to="/cart">
           <i className="fas fa-shopping-cart"></i>
-        </button>
+        </Link>
       </div>
     </header>
   );

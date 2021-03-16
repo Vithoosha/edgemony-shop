@@ -1,66 +1,28 @@
 import "./App.css";
-import {
-  Header,
-  Cart,
-  Hero,
-  Loader,
-  Products,
-  Error,
-  ProductDetail,
-  ModalSidebar,
-  ModalOverlay,
-  Footer,
-  ModalCenter,
-} from "./components/Index";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Header } from "./components/Index";
+import Home from "./pages/Home";
+import Product from "./pages/Product";
+import Cart from "./pages/Cart";
+import Page404 from "./pages/Page404";
 import { useState, useEffect } from "react";
 import { data } from "./services/data";
-import { fetchProducts, fetchCategories } from "./services/api";
+// import { useModal } from "./services/useModal";
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errMess, setErrMess] = useState("");
-  const [retry, setRetry] = useState(false);
-  useEffect(() => {
-    Promise.all([fetchProducts(), fetchCategories()])
-      .then(([products, categories]) => {
-        setProducts(products);
-        setCategories(categories);
-      })
-      .catch((err) => setErrMess(err.message))
-      .finally(() => setIsLoading(false));
-  }, [retry]);
-
-  const [isModal, setIsModal] = useState(false);
-  const [contentModal, setContentModal] = useState(null);
-  function showModal(product) {
-    setContentModal(product);
-    setIsModal(true);
-  }
-  function hideModal() {
-    setIsModal(false);
-    setContentModal(null);
-  }
-
+  // const [isCartModalOpen, openCartModal, closeCartModal] = useModal();
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);
-  const manageCart = () => setCartState(!cartState);
-  const cartProducts = cart.map((cartItem) => {
-    const { price, image, title, id } = products.find(
-      (p) => p.id === cartItem.id
-    );
-    return { price, image, title, id, quantity: cartItem.quantity };
-  });
-  const cartTotal = cartProducts.reduce(
+  const cartTotal = cart.reduce(
     (total, product) => total + product.price * product.quantity,
     0
   );
   function isInCart(product) {
     return product != null && cart.find((p) => p.id === product.id) != null;
   }
-  function addToCart(productId) {
-    setCart([...cart, { id: productId, quantity: 1 }]);
+  function addToCart(product) {
+    setCart([...cart, { ...product, quantity: 1 }]);
+    console.log(cart);
   }
   function removeFromCart(productId) {
     setCart(cart.filter((product) => product.id !== productId));
@@ -74,62 +36,42 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Header
-        logo={data.logo}
-        manageCart={manageCart}
-        cartTotal={cartTotal}
-        cartSize={cart.length}
-        products={products}
-      />
-      <main>
-        <Hero title={data.title} desc={data.description} cover={data.cover} />
-        <ModalOverlay isOpen={cartState} isClose={manageCart}>
-          <ModalSidebar
-            isOpen={cartState}
-            isClose={manageCart}
-            title="Cart"
-            flex="flex"
-          >
+    <Router>
+      <div className="App">
+        <Header
+          logo={data.logo}
+          title={data.title}
+          cartTotal={cartTotal}
+          cartSize={cart.length}
+          setCartState={setCartState}
+          // onCartClick={openCartModal}
+        />
+
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/product/:productId">
+            <Product
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+              isInCart={isInCart}
+            />
+          </Route>
+          <Route path="/cart">
             <Cart
-              products={cartProducts}
+              products={cart}
               totalPrice={cartTotal}
               removeFromCart={removeFromCart}
               setProductQuantity={setProductQuantity}
             />
-          </ModalSidebar>
-        </ModalOverlay>
-
-        {/* { errMess ? Error : (isLoading ? Loader : Products ) } */}
-        {errMess ? (
-          <Error
-            text={errMess}
-            retry={() => setRetry(!retry)}
-            close={() => setErrMess("")}
-          />
-        ) : isLoading ? (
-          <Loader />
-        ) : (
-          <Products
-            products={products}
-            showModal={showModal}
-            categories={categories}
-          />
-        )}
-
-        <ModalOverlay isOpen={isModal} isClose={hideModal}>
-          <ModalCenter isOpen={isModal} isClose={hideModal}>
-            <ProductDetail
-              content={contentModal}
-              isInCart={isInCart(contentModal)}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-            />
-          </ModalCenter>
-        </ModalOverlay>
-      </main>
-      <Footer company={data.company} />
-    </div>
+          </Route>
+          <Route path="*">
+            <Page404 />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

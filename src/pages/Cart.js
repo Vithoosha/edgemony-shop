@@ -1,10 +1,11 @@
-import "./Cart.css";
-import CartProduct from "./CartProduct";
 import { formatPrice } from "../services/utils";
+import CartProduct from "./../components/CartProduct";
+import { Link } from "react-router-dom";
 
 function Cart({ products, totalPrice, removeFromCart, setProductQuantity }) {
   return (
     <>
+      <Link to="/">X</Link>
       {products.length > 0 ? (
         <div className="Cart">
           {products.map((product) => (

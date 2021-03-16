@@ -15,3 +15,6 @@ export async function fetchProducts() {
 export async function fetchCategories() {
   return ReceiveData("products/categories");
 }
+export async function fetchProduct(id) {
+  return ReceiveData(`products/${id}`);
+}
