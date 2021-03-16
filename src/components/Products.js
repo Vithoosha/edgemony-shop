@@ -2,7 +2,7 @@ import Card from "./Card.js";
 import { useState } from "react";
 import "./Products.css";
 
-function Products({ products, showModal }) {
+function Products({ products }) {
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
   const termRegexp = new RegExp(search, "i");
@@ -23,13 +23,7 @@ function Products({ products, showModal }) {
       </div>
       <div className="Products">
         {filteredProducts.map((product) => {
-          return (
-            <Card
-              key={product.id}
-              product={product}
-              showModal={() => showModal(product)}
-            />
-          );
+          return <Card key={product.id} product={product} />;
         })}
       </div>
     </>
