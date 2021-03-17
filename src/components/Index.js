@@ -1,9 +1,7 @@
-export { default as Header } from "./Header";
-export { default as Hero } from "./Hero";
-export { default as Loader } from "./Loader";
-export { default as Products } from "./Products";
-export { default as Error } from "./Error";
-export { default as ModalSidebar } from "./ModalSidebar";
-export { default as ModalOverlay } from "./ModalOverlay";
-export { default as ModalCenter } from "./ModalCenter";
-export { default as Footer } from "./Footer";
+export { default as Header } from "./Header/Header";
+export { default as Hero } from "./Main/Hero/Hero";
+export { default as Loader } from "./Main/Reusable/Loader/Loader";
+export { default as Products } from "./Main/Products/Products";
+export { default as Error } from "./Main/Reusable/ErrorBanner/Error";
+export { default as CartProduct } from "./Main/CartProduct/CartProduct";
+export { default as Footer } from "./Footer/Footer";

@@ -1,20 +1,22 @@
-const base = "https://fakestoreapi.com/";
+const baseURL = "https://fakestoreapi.com";
 
-async function ReceiveData(endpoint) {
-  const res = await fetch(`${base}${endpoint}`);
-  const data = await res.json();
-  if (res.status >= 400) {
+async function callAPI(endpoint) {
+  const response = await fetch(`${baseURL}/${endpoint}`);
+  const data = await response.json();
+  if (response.status >= 400) {
     throw new Error(data.message);
   }
   return data;
 }
 
 export async function fetchProducts() {
-  return ReceiveData("products");
+  return callAPI("products");
 }
-export async function fetchCategories() {
-  return ReceiveData("products/categories");
-}
+
 export async function fetchProduct(id) {
-  return ReceiveData(`products/${id}`);
+  return callAPI(`products/${id}`);
+}
+
+export async function fetchCategories() {
+  return callAPI("products/categories");
 }

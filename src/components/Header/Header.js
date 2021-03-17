@@ -1,6 +1,6 @@
 import "./Header.css";
 import { Link } from "react-router-dom";
-import { formatPrice } from "../services/utils";
+import { formatPrice } from "../../services/utils";
 
 function Header({ logo, title, cartTotal, cartSize }) {
   return (

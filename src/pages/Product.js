@@ -2,7 +2,7 @@ import "./../App.css";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchProduct } from "./../services/api";
-import { Loader, Error } from "./../components/Index";
+import { Loader, Error } from "../components/Index";
 
 function Product({ addToCart, removeFromCart, isInCart }) {
   let { productId } = useParams();

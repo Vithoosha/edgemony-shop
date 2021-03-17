@@ -1,5 +1,5 @@
 import "./../App.css";
-import { Hero, Loader, Products, Error, Footer } from "./../components/Index";
+import { Hero, Loader, Products, Error, Footer } from "../components/Index";
 import { useState, useEffect } from "react";
 import { data } from "./../services/data";
 import { fetchProducts, fetchCategories } from "./../services/api";
@@ -24,7 +24,6 @@ function Home() {
     <>
       <main>
         <Hero title={data.title} desc={data.description} cover={data.cover} />
-
         {/* { errMess ? Error : (isLoading ? Loader : Products ) } */}
         {errMess ? (
           <Error

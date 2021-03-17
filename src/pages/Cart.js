@@ -1,5 +1,5 @@
 import { formatPrice } from "../services/utils";
-import CartProduct from "./../components/CartProduct";
+import { CartProduct } from "../components/Index";
 import { Link } from "react-router-dom";
 
 function Cart({ products, totalPrice, removeFromCart, setProductQuantity }) {

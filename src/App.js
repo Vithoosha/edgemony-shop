@@ -1,16 +1,11 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Header } from "./components/Index";
-import Home from "./pages/Home";
-import Product from "./pages/Product";
-import Cart from "./pages/Cart";
-import Page404 from "./pages/Page404";
+import { Home, Page404, Product, Cart } from "./pages/Index";
 import { useState, useEffect } from "react";
 import { data } from "./services/data";
-// import { useModal } from "./services/useModal";
 
 function App() {
-  // const [isCartModalOpen, openCartModal, closeCartModal] = useModal();
   const [cart, setCart] = useState([]);
   const [cartState, setCartState] = useState(false);
   const cartTotal = cart.reduce(
@@ -44,7 +39,6 @@ function App() {
           cartTotal={cartTotal}
           cartSize={cart.length}
           setCartState={setCartState}
-          // onCartClick={openCartModal}
         />
 
         <Switch>
