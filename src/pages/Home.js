@@ -4,17 +4,24 @@ import { useState, useEffect } from "react";
 import { data } from "./../services/data";
 import { fetchProducts, fetchCategories } from "./../services/api";
 
+let cache;
 function Home() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState(cache ? cache.products : []);
+  const [categories, setCategories] = useState(cache ? cache.categories : []);
+  const [isLoading, setIsLoading] = useState(false);
   const [errMess, setErrMess] = useState("");
   const [retry, setRetry] = useState(false);
+  console.log({ cache });
   useEffect(() => {
+    if (cache !== undefined) {
+      return;
+    }
+    setIsLoading(true);
     Promise.all([fetchProducts(), fetchCategories()])
       .then(([products, categories]) => {
         setProducts(products);
         setCategories(categories);
+        cache = { products, categories };
       })
       .catch((err) => setErrMess(err.message))
       .finally(() => setIsLoading(false));
